@@ -60,8 +60,8 @@ const data = {
           url: "/apps/dashboard",
         },
         {
-          title: "Trips",
-          url: "/apps/trips",
+          title: "Trip",
+          url: "/apps/trip",
         },
       ],
     },

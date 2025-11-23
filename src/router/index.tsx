@@ -4,6 +4,7 @@ import AppLayout from "@/layouts/AppLayout";
 import Login from "@/features/auth/Login";
 import Dashboard from "@/features/dashboard/Dashboard";
 import type { JSX } from "react";
+import Trips from "@/features/trip/trip";
 
 const isAuthenticated = () => !!localStorage.getItem("token"); // or Zustand token
 
@@ -30,6 +31,7 @@ const router = createBrowserRouter([
     ),
     children: [
       { path: "dashboard", element: <Dashboard /> },
+      { path: "trip", element: <Trips /> },
       { path: "", element: <Navigate to="dashboard" replace /> },
     ],
   },
