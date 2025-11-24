@@ -1,5 +1,5 @@
  
-import { DataTable } from "@/components/data-table";
+import { DataTable } from "@/components/trip-data-table";
 //import { SectionCards } from "@/components/section-cards";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
@@ -7,8 +7,14 @@ import { Separator } from "@/components/ui/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { useBreadcrumbs } from "@/hooks/use-breadcrumbs";
 import React from "react";
-import data from "@/lib/data.json" 
-
+import data from "@/lib/so-data.json" 
+// Convert string dates to Date objects
+const parsedData = data.map(item => ({
+  ...item,
+  deliverydate: new Date(item.deliverydate),
+  uploaddate: new Date(item.uploaddate),
+   secondplantid: String(item.secondplantid),  
+}))
 const Trips = () => {
     const breadcrumbs = useBreadcrumbs();
     return (
@@ -53,16 +59,15 @@ const Trips = () => {
             </div>
           </header> 
           <div className="flex flex-1 flex-col">
-            <div className="@container/main flex flex-1 flex-col gap-2">
-              <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6"> 
-                <div className="px-4 lg:px-6"> 
-                  <div className=" bg-muted/50  h-50 rounded-xl" > 
-                  </div>   
-                </div>
-                <DataTable data={data} />
-              </div>
+          <div className="@container/main flex flex-1 flex-col gap-2">
+             
+
+            <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">  
+              <DataTable data={parsedData} />
             </div>
+            
           </div>
+        </div> 
         </SidebarInset>
       </SidebarProvider>
     )
