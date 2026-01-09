@@ -1,0 +1,48 @@
+[
+  { 
+    "customerGroup": "BPI",
+    "shipTo": "ABC Corp", 
+    "orderDate": "2026-01-09",
+    "docid" : 1,
+    "docno": "CSATW00000001", 
+    "docDate": "2026-01-09",
+    "deliveryDate": "2026-01-09",
+    "docStatus": "Draft",
+    "items": [
+      {
+        "lineId": 1,
+        "docid": 1,
+        "itemCode": "CS-FG-SPICG",
+        "description": "SC SPICY GOURMET CHICKEN",
+        "qty": 10,
+        "uom": "BOX",
+        "price": 120,
+        "wt": 15.5,
+        "lineStatus": "O"
+      }
+    ]
+  },
+  { 
+    "customerGroup": "BPI",
+    "shipTo": "ABC Corp", 
+    "orderDate": "2026-01-09",
+    "docid" : 2,
+    "docno": "CSATW00000002", 
+    "docDate": "2026-01-09",
+    "deliveryDate": "2026-01-09",
+    "docStatus": "Draft",
+    "items": [
+      {
+        "lineId": 2,
+        "docid": 2,
+        "itemCode": "CS-FG-SPICG",
+        "description": "SC SPICY GOURMET CHICKEN",
+        "qty": 10,
+        "uom": "BOX",
+        "price": 120,
+        "wt": 15.5,
+        "lineStatus": "O"
+      }
+    ]
+  }
+]

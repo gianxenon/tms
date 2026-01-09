@@ -5,6 +5,7 @@ import Login from "@/features/auth/Login";
 import Dashboard from "@/features/dashboard/Dashboard";
 import type { JSX } from "react";
 import Trips from "@/features/trip/trip";
+import Atw from "@/features/atw/atw";
 
 const isAuthenticated = () => !!localStorage.getItem("token"); // or Zustand token
 
@@ -32,6 +33,7 @@ const router = createBrowserRouter([
     children: [
       { path: "dashboard", element: <Dashboard /> },
       { path: "trip", element: <Trips /> },
+      { path: "atw", element: <Atw/>  },
       { path: "", element: <Navigate to="dashboard" replace /> },
     ],
   },

@@ -3,16 +3,11 @@ import {
   AudioWaveform,
   BookOpen,
   Bot,
-  Command,
-  Frame,
-  GalleryVerticalEnd,
-  Map,
-  PieChart,
-  Settings2,
+  Command, 
+  GalleryVerticalEnd, 
   SquareTerminal,
 } from "lucide-react" 
-import { NavMain } from '@/components/sidebar/nav-main'
-import { NavProjects } from '@/components/sidebar/nav-projects'
+import { NavMain } from '@/components/sidebar/nav-main' 
 import { NavUser } from '@/components/sidebar/nav-user'
 import { TeamSwitcher } from '@/components/sidebar/team-switcher'
 import {
@@ -48,16 +43,26 @@ const data = {
     },
   ],
   navMain: [
-    
     {
-      title: "Manage Dispatch",
-      url: "/apps/manage-dispatch",
-      icon: SquareTerminal,
+      title: "Dashboard",
+      url: "/apps/dashboard",
+      icon: BookOpen,
       items: [
         { 
 
           title: "Dashboard",
           url: "/apps/dashboard",
+        }, 
+      ],
+    },
+    {
+      title: "Manage Dispatch",
+      url: "/apps/manage-dispatch",
+      icon: SquareTerminal,
+      items: [ 
+        {
+          title: "Authority to Withdraw",
+          url: "/apps/atw",
         },
         {
           title: "Trip",
@@ -91,71 +96,9 @@ const data = {
           url: "#",
         }
       ],
-    },
-    {
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
-      items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
-      ],
-    },
+    },  
   ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
-    },
-  ],
+   
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -165,8 +108,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        <NavMain items={data.navMain} /> 
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />

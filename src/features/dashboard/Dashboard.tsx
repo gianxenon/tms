@@ -17,7 +17,7 @@ import {
 import { useBreadcrumbs } from '@/hooks/use-breadcrumbs';
 import React from 'react';
 import data from "@/lib/data.json"
-import { DataTable } from '@/components/data-table';
+import { DataTable } from '@/components/dashboard-data-table';
 import { SectionCards } from '@/components/section-cards';
 import { ChartAreaInteractive } from '@/components/chart-area-interactive';
 const Dashboard = () => {
