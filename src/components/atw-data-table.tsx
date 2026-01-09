@@ -3,7 +3,7 @@ import * as React from "react"
 // import { restrictToVerticalAxis } from "@dnd-kit/modifiers"
 // import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy, } from "@dnd-kit/sortable"
 // import { CSS } from "@dnd-kit/utilities"
-import { IconChevronDown, IconChevronLeft, IconChevronRight, IconChevronsLeft, IconChevronsRight, IconCircleCheckFilled, IconDotsVertical, IconLayoutColumns, IconLoader, IconTrendingUp, IconUpload } from "@tabler/icons-react" //IconPlus,IconGripVertical,  IconCircleCheckFilled,  IconLoader, 
+import { IconChevronDown, IconChevronLeft, IconChevronRight, IconChevronsLeft, IconChevronsRight, IconCircleCheckFilled, IconLayoutColumns,    IconPaperclip,     IconTrendingUp, IconUpload } from "@tabler/icons-react"  
 import type { ColumnDef, ColumnFiltersState, SortingState, VisibilityState, } from "@tanstack/react-table"
 
 import { flexRender, getCoreRowModel, getFacetedRowModel, getFacetedUniqueValues, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable, } from "@tanstack/react-table"
@@ -18,7 +18,7 @@ import type { ChartConfig } from "@/components/ui/chart"
 import { ChartContainer, ChartTooltip, ChartTooltipContent, } from "@/components/ui/chart"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger, } from "@/components/ui/drawer"
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger, } from "@/components/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent,  DropdownMenuTrigger, } from "@/components/ui/dropdown-menu" //DropdownMenuItem, DropdownMenuSeparator,
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select"
@@ -26,9 +26,10 @@ import { Separator } from "@/components/ui/separator"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger, } from "@/components/ui/tabs"
 
-import { schema } from "@/components/atw-schema"
+import { orderSchema  } from "@/components/atw-schema"
  
-const columns: ColumnDef<z.infer<typeof schema>>[] = [ 
+type Order = z.infer<typeof orderSchema>
+const columns: ColumnDef<Order>[] = [ 
   {
     id: "select",
     header: ({ table }) => (
@@ -56,7 +57,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "plantid",
+    accessorKey: "docno",
     header: "Document No.",
     cell: ({ row }) => {
       return <TableCellViewer item={row.original} />
@@ -64,250 +65,301 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
     enableHiding: false,
   },
   { 
-    accessorKey: "profilename",
-    header: "Cluster",
+    accessorKey: "shipTo",
+    header: "Ship To",
     cell: ({ row }) => (
       <div className="w-32">
-        <Badge variant="outline" className="text-muted-foreground px-1.5">
-          {row.original.profilename}
-        </Badge>
+         <Label> 
+          {row.original.shipTo}
+        </Label>
       </div>
     ),
-  },
-   {
+  },{
+    accessorKey: "customerGroup",
+    header: "Customer Group",
+    cell: ({ row }) => (
+      <div className="w-32">
+        <Label> 
+          {row.original.customerGroup}
+        </Label>
+      </div>
+    ),
+  },{
+    accessorKey: "deliveryDate",
+    header: "Delivery Date",
+    cell: ({ row }) => (
+      <div className="w-32">
+        <Label>
+          {row.original.deliveryDate}
+        </Label>
+      </div>
+    ),
+  },{
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => (
       <Badge variant="outline" className="text-muted-foreground px-1.5">
-        {row.original.status === "Delivered" ? (
+        {row.original.docStatus === "Planned" ? (
           <IconCircleCheckFilled className="fill-green-500 dark:fill-green-400" />
         ) : (
-          <IconLoader />
+          <IconPaperclip />
         )}
-        {row.original.status}
+        {row.original.docStatus}
       </Badge>
     ),
-  },
+  },{
+    accessorKey: "qty",
+    header: "Forecast Qty",
+    cell: ({ row }) => (
+       
+      <div className="w-32">
+         <Label>
+          {row.original.items[0].qty}
+        </Label>
+      </div>
+    ),
+  },{
+    accessorKey: "uom",
+    header: "Hds/Pcks",
+    cell: ({ row }) => (
+       
+      <div className="w-32">
+        <Label>
+          {row.original.items[0].uom}
+        </Label> 
+      </div>
+    ),
+  },{
+    accessorKey: "wt",
+    header: "WT",
+    cell: ({ row }) => (
+       
+      <div className="w-32">
+        {/* <Badge variant="outline" className="text-muted-foreground px-1.5"> */}
+        <Label> {row.original.items[0].wt} kg </Label> 
+        {/* </Badge> */}
+      </div>
+    ),
+  }
+  // {
+  //   accessorKey: "salesorderid",
+  //   header: "Sales Order",
+  //   cell: ({ row }) => (
+  //     <div className="w-32">
+  //       <Badge variant="outline" className="text-muted-foreground px-1.5">
+  //         {row.original.salesorderid}
+  //       </Badge>
+  //     </div>
+  //   ),
+  // },
+  // {
+  //   accessorKey: "customersname",
+  //   header: "Customers Name",
+  //   cell: ({ row }) => (
+  //     <div className="w-32">
+  //       <Badge variant="outline" className="text-muted-foreground px-1.5">
+  //         {row.original.customersname}
+  //       </Badge>
+  //     </div>
+  //   ),
+  // }, 
+  // {
+  //   accessorKey: "salesmanid",
+  //   header: "SalesMan",
+  //   cell: ({ row }) => (
+  //     <div className="w-32">
+  //       <Badge variant="outline" className="text-muted-foreground px-1.5">
+  //         {row.original.salesmanid}
+  //       </Badge>
+  //     </div>
+  //   ),
+  // }, {
+  //   accessorKey: "forecastqty",
+  //   header: () => <div className="w-full text-right">Forecast Qty</div>,
+  //   cell: ({ row }) => (
+  //     <form
+  //       onSubmit={(e) => {
+  //         e.preventDefault()
+  //         toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
+  //           loading: `Saving ${row.original.forecastqty}`,
+  //           success: "Done",
+  //           error: "Error",
+  //         })
+  //       }}
+  //     >
+  //       <Label htmlFor={`${row.original.id}-forecastqty`} className="sr-only">
+  //         Forecast Qty
+  //       </Label>
+  //       <Input
+  //         className="hover:bg-input/30 focus-visible:bg-background dark:hover:bg-input/30 dark:focus-visible:bg-input/30 h-8 w-16 border-transparent bg-transparent text-right shadow-none focus-visible:border dark:bg-transparent"
+  //         defaultValue={row.original.forecastqty}
+  //         id={`${row.original.id}-forecastqty`}
+  //       />
+  //     </form>
+  //   ),
+  // },
+  // {
+  //   accessorKey: "finalorderqty",
+  //   header: () => <div className="w-full text-right">Final Order Qty</div>,
+  //   cell: ({ row }) => (
+  //     <form
+  //       onSubmit={(e) => {
+  //         e.preventDefault()
+  //         toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
+  //           loading: `Saving ${row.original.finalorderqty}`,
+  //           success: "Done",
+  //           error: "Error",
+  //         })
+  //       }}
+  //     >
+  //       <Label htmlFor={`${row.original.id}-finalorderqty`} className="sr-only">
+  //         Final Order Qty
+  //       </Label>
+  //       <Input
+  //         className="hover:bg-input/30 focus-visible:bg-background dark:hover:bg-input/30 dark:focus-visible:bg-input/30 h-8 w-16 border-transparent bg-transparent text-right shadow-none focus-visible:border dark:bg-transparent"
+  //         defaultValue={row.original.finalorderqty}
+  //         id={`${row.original.id}-finalorderqty`}
+  //       />
+  //     </form>
+  //   ),
+  // },
+  // {
+  //   accessorKey: "kilos",
+  //   header: () => <div className="w-full text-right">Kilos</div>,
+  //   cell: ({ row }) => (
+  //     <form
+  //       onSubmit={(e) => {
+  //         e.preventDefault()
+  //         toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
+  //           loading: `Saving ${row.original.kilos}`,
+  //           success: "Done",
+  //           error: "Error",
+  //         })
+  //       }}
+  //     >
+  //       <Label htmlFor={`${row.original.id}-kilos`} className="sr-only">
+  //         Kilos
+  //       </Label>
+  //       <Input
+  //         className="hover:bg-input/30 focus-visible:bg-background dark:hover:bg-input/30 dark:focus-visible:bg-input/30 h-8 w-16 border-transparent bg-transparent text-right shadow-none focus-visible:border dark:bg-transparent"
+  //         defaultValue={row.original.kilos}
+  //         id={`${row.original.id}-kilos`}
+  //       />
+  //     </form>
+  //   ),
+  // },
+  // {
+  //   accessorKey: "uoms",
+  //   header: () => <div className="w-full text-right">Crate/Box/Sacks</div>,
+  //   cell: ({ row }) => (
+  //     <form
+  //       onSubmit={(e) => {
+  //         e.preventDefault()
+  //         toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
+  //           loading: `Saving ${row.original.uoms}`,
+  //           success: "Done",
+  //           error: "Error",
+  //         })
+  //       }}
+  //     >
+  //       <Label htmlFor={`${row.original.id}-uoms`} className="sr-only">
+  //         Crate/Box/Sacks
+  //       </Label>
+  //       <Input
+  //         className="hover:bg-input/30 focus-visible:bg-background dark:hover:bg-input/30 dark:focus-visible:bg-input/30 h-8 w-16 border-transparent bg-transparent text-right shadow-none focus-visible:border dark:bg-transparent"
+  //         defaultValue={row.original.uoms}
+  //         id={`${row.original.id}-uoms`}
+  //       />
+  //     </form>
+  //   ),
+  // },
+  // {
+  //   accessorKey: "secondplantid",
+  //   header: "Second Plant",
+  //   cell: ({ row }) => {
+  //       const value = row.original.secondplantid;
+
+  //       // Show dropdown if value is empty or null
+  //       const showDropdown = !value || value === "";
+
+  //       if (!showDropdown) {
+  //       return value; // show the assigned plant
+  //       }
+
+  //       return (
+  //       <>
+  //           <Label
+  //           htmlFor={`${row.original.id}-secondplantid`}
+  //           className="sr-only"
+  //           >
+  //           Source Plant
+  //           </Label>
+  //           <Select>
+  //           <SelectTrigger
+  //               className="w-38 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate"
+  //               size="sm"
+  //               id={`${row.original.id}-secondplantid`}
+  //           >
+  //               <SelectValue placeholder="Assign Source Plant" />
+  //           </SelectTrigger>
+  //           <SelectContent align="end">
+  //               <SelectItem value="1">PULILAN-OCS</SelectItem>
+  //               <SelectItem value="22">TARLAC</SelectItem>
+  //           </SelectContent>
+  //           </Select>
+  //       </>
+  //       );
+  //   },
+  //   }, {
+  //   accessorKey: "allocatedqty",
+  //   header: () => <div className="w-full text-right">allocatedqty</div>,
+  //   cell: ({ row }) => (
+  //     <form
+  //       onSubmit={(e) => {
+  //         e.preventDefault()
+  //         toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
+  //           loading: `Saving ${row.original.allocatedqty}`,
+  //           success: "Done",
+  //           error: "Error",
+  //         })
+  //       }}
+  //     >
+  //       <Label htmlFor={`${row.original.id}-allocatedqty`} className="sr-only">
+  //         uoms
+  //       </Label>
+  //       <Input
+  //         className="hover:bg-input/30 focus-visible:bg-background dark:hover:bg-input/30 dark:focus-visible:bg-input/30 h-8 w-16 border-transparent bg-transparent text-right shadow-none focus-visible:border dark:bg-transparent"
+  //         defaultValue={row.original.allocatedqty}
+  //         id={`${row.original.id}-allocatedqty`}
+  //       />
+  //     </form>
+  //   ),
+  // },
    
-   {
-    accessorKey: "salesorderid",
-    header: "Sales Order",
-    cell: ({ row }) => (
-      <div className="w-32">
-        <Badge variant="outline" className="text-muted-foreground px-1.5">
-          {row.original.salesorderid}
-        </Badge>
-      </div>
-    ),
-  },
-  {
-    accessorKey: "customersname",
-    header: "Customers Name",
-    cell: ({ row }) => (
-      <div className="w-32">
-        <Badge variant="outline" className="text-muted-foreground px-1.5">
-          {row.original.customersname}
-        </Badge>
-      </div>
-    ),
-  }, 
-  {
-    accessorKey: "salesmanid",
-    header: "SalesMan",
-    cell: ({ row }) => (
-      <div className="w-32">
-        <Badge variant="outline" className="text-muted-foreground px-1.5">
-          {row.original.salesmanid}
-        </Badge>
-      </div>
-    ),
-  }, {
-    accessorKey: "forecastqty",
-    header: () => <div className="w-full text-right">Forecast Qty</div>,
-    cell: ({ row }) => (
-      <form
-        onSubmit={(e) => {
-          e.preventDefault()
-          toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
-            loading: `Saving ${row.original.forecastqty}`,
-            success: "Done",
-            error: "Error",
-          })
-        }}
-      >
-        <Label htmlFor={`${row.original.id}-forecastqty`} className="sr-only">
-          Forecast Qty
-        </Label>
-        <Input
-          className="hover:bg-input/30 focus-visible:bg-background dark:hover:bg-input/30 dark:focus-visible:bg-input/30 h-8 w-16 border-transparent bg-transparent text-right shadow-none focus-visible:border dark:bg-transparent"
-          defaultValue={row.original.forecastqty}
-          id={`${row.original.id}-forecastqty`}
-        />
-      </form>
-    ),
-  },
-  {
-    accessorKey: "finalorderqty",
-    header: () => <div className="w-full text-right">Final Order Qty</div>,
-    cell: ({ row }) => (
-      <form
-        onSubmit={(e) => {
-          e.preventDefault()
-          toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
-            loading: `Saving ${row.original.finalorderqty}`,
-            success: "Done",
-            error: "Error",
-          })
-        }}
-      >
-        <Label htmlFor={`${row.original.id}-finalorderqty`} className="sr-only">
-          Final Order Qty
-        </Label>
-        <Input
-          className="hover:bg-input/30 focus-visible:bg-background dark:hover:bg-input/30 dark:focus-visible:bg-input/30 h-8 w-16 border-transparent bg-transparent text-right shadow-none focus-visible:border dark:bg-transparent"
-          defaultValue={row.original.finalorderqty}
-          id={`${row.original.id}-finalorderqty`}
-        />
-      </form>
-    ),
-  },
-  {
-    accessorKey: "kilos",
-    header: () => <div className="w-full text-right">Kilos</div>,
-    cell: ({ row }) => (
-      <form
-        onSubmit={(e) => {
-          e.preventDefault()
-          toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
-            loading: `Saving ${row.original.kilos}`,
-            success: "Done",
-            error: "Error",
-          })
-        }}
-      >
-        <Label htmlFor={`${row.original.id}-kilos`} className="sr-only">
-          Kilos
-        </Label>
-        <Input
-          className="hover:bg-input/30 focus-visible:bg-background dark:hover:bg-input/30 dark:focus-visible:bg-input/30 h-8 w-16 border-transparent bg-transparent text-right shadow-none focus-visible:border dark:bg-transparent"
-          defaultValue={row.original.kilos}
-          id={`${row.original.id}-kilos`}
-        />
-      </form>
-    ),
-  },
-  {
-    accessorKey: "uoms",
-    header: () => <div className="w-full text-right">Crate/Box/Sacks</div>,
-    cell: ({ row }) => (
-      <form
-        onSubmit={(e) => {
-          e.preventDefault()
-          toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
-            loading: `Saving ${row.original.uoms}`,
-            success: "Done",
-            error: "Error",
-          })
-        }}
-      >
-        <Label htmlFor={`${row.original.id}-uoms`} className="sr-only">
-          Crate/Box/Sacks
-        </Label>
-        <Input
-          className="hover:bg-input/30 focus-visible:bg-background dark:hover:bg-input/30 dark:focus-visible:bg-input/30 h-8 w-16 border-transparent bg-transparent text-right shadow-none focus-visible:border dark:bg-transparent"
-          defaultValue={row.original.uoms}
-          id={`${row.original.id}-uoms`}
-        />
-      </form>
-    ),
-  },
-  {
-    accessorKey: "secondplantid",
-    header: "Second Plant",
-    cell: ({ row }) => {
-        const value = row.original.secondplantid;
-
-        // Show dropdown if value is empty or null
-        const showDropdown = !value || value === "";
-
-        if (!showDropdown) {
-        return value; // show the assigned plant
-        }
-
-        return (
-        <>
-            <Label
-            htmlFor={`${row.original.id}-secondplantid`}
-            className="sr-only"
-            >
-            Source Plant
-            </Label>
-            <Select>
-            <SelectTrigger
-                className="w-38 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate"
-                size="sm"
-                id={`${row.original.id}-secondplantid`}
-            >
-                <SelectValue placeholder="Assign Source Plant" />
-            </SelectTrigger>
-            <SelectContent align="end">
-                <SelectItem value="1">PULILAN-OCS</SelectItem>
-                <SelectItem value="22">TARLAC</SelectItem>
-            </SelectContent>
-            </Select>
-        </>
-        );
-    },
-    }, {
-    accessorKey: "allocatedqty",
-    header: () => <div className="w-full text-right">allocatedqty</div>,
-    cell: ({ row }) => (
-      <form
-        onSubmit={(e) => {
-          e.preventDefault()
-          toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
-            loading: `Saving ${row.original.allocatedqty}`,
-            success: "Done",
-            error: "Error",
-          })
-        }}
-      >
-        <Label htmlFor={`${row.original.id}-allocatedqty`} className="sr-only">
-          uoms
-        </Label>
-        <Input
-          className="hover:bg-input/30 focus-visible:bg-background dark:hover:bg-input/30 dark:focus-visible:bg-input/30 h-8 w-16 border-transparent bg-transparent text-right shadow-none focus-visible:border dark:bg-transparent"
-          defaultValue={row.original.allocatedqty}
-          id={`${row.original.id}-allocatedqty`}
-        />
-      </form>
-    ),
-  },
-   
-  {
-    id: "actions",
-    cell: () => (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            className="data-[state=open]:bg-muted text-muted-foreground flex size-8"
-            size="icon"
-          >
-            <IconDotsVertical />
-            <span className="sr-only">Open menu</span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-32">
-          <DropdownMenuItem>Edit</DropdownMenuItem>
-          <DropdownMenuItem>Make a copy</DropdownMenuItem>
-          <DropdownMenuItem>Favorite</DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    ),
-  },
+  // {
+  //   id: "actions",
+  //   cell: () => (
+  //     <DropdownMenu>
+  //       <DropdownMenuTrigger asChild>
+  //         <Button
+  //           variant="ghost"
+  //           className="data-[state=open]:bg-muted text-muted-foreground flex size-8"
+  //           size="icon"
+  //         >
+  //           <IconDotsVertical />
+  //           <span className="sr-only">Open menu</span>
+  //         </Button>
+  //       </DropdownMenuTrigger>
+  //       <DropdownMenuContent align="end" className="w-32">
+  //         <DropdownMenuItem>Edit</DropdownMenuItem>
+  //         <DropdownMenuItem>Make a copy</DropdownMenuItem>
+  //         <DropdownMenuItem>Favorite</DropdownMenuItem>
+  //         <DropdownMenuSeparator />
+  //         <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
+  //       </DropdownMenuContent>
+  //     </DropdownMenu>
+  //   ),
+  // },
 ]
 
  
@@ -315,11 +367,11 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
 export function DataTable({
   data: initialData,
 }: {
-  data: z.infer<typeof schema>[]
+  data: z.infer<typeof orderSchema>[]
 }) 
 { 
  
-   const [data ] = React.useState(() => initialData)
+    const [data] = React.useState(() => initialData)
     const [rowSelection, setRowSelection] = React.useState({})
     const [columnVisibility, setColumnVisibility] =
         React.useState<VisibilityState>({})
@@ -346,7 +398,7 @@ export function DataTable({
         columnFilters,
         pagination,
         },
-        getRowId: (row) => row.id.toString(),
+        getRowId: (row) => row.docid?.toString() ?? crypto.randomUUID(), 
         enableRowSelection: true,
         onRowSelectionChange: setRowSelection,
         onSortingChange: setSorting,
@@ -651,20 +703,24 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
+function TableCellViewer({
+  item,
+}: {
+  item: z.infer<typeof orderSchema>
+}) {
   const isMobile = useIsMobile()
 
   return (
     <Drawer direction={isMobile ? "bottom" : "right"}>
       <DrawerTrigger asChild>
         <Button variant="link" className="text-foreground w-fit px-0 text-left">
-          {item.plantid}
+          {item.docno}
         </Button>
       </DrawerTrigger>
 
       <DrawerContent>
         <DrawerHeader className="gap-1">
-          <DrawerTitle>{item.plantid}</DrawerTitle>
+          <DrawerTitle>{item.docno}</DrawerTitle>
           <DrawerDescription>
             Showing total visitors for the last 6 months
           </DrawerDescription>
@@ -730,12 +786,12 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
           <form className="flex flex-col gap-4">
             <div className="flex flex-col gap-3">
               <Label htmlFor="header">Source Plant</Label>
-              <Input id="header" defaultValue={item.plantid} />
+              <Input id="header" defaultValue={item.docno} />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-3">
                 <Label htmlFor="type">Type</Label>
-                <Select defaultValue={item.status}>
+                <Select defaultValue={item.docStatus}>
                   <SelectTrigger id="type" className="w-full">
                     <SelectValue placeholder="Select a type" />
                   </SelectTrigger>
@@ -753,7 +809,7 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
               </div>
               <div className="flex flex-col gap-3">
                 <Label htmlFor="status">Status</Label>
-                <Select defaultValue={item.status}>
+                <Select defaultValue={item.docStatus}>
                   <SelectTrigger id="status" className="w-full">
                     <SelectValue placeholder="Select a status" />
                   </SelectTrigger>
@@ -768,16 +824,16 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-3">
                 <Label htmlFor="target">Target</Label>
-                <Input id="target" defaultValue={item.allocatedqty} />
+                <Input id="target" defaultValue={item.docid} />
               </div>
               <div className="flex flex-col gap-3">
                 <Label htmlFor="limit">Limit</Label>
-                <Input id="limit" defaultValue={item.allocatedqty} />
+                <Input id="limit" defaultValue={item.docid} />
               </div>
             </div>
             <div className="flex flex-col gap-3">
               <Label htmlFor="reviewer">Reviewer</Label>
-              <Select defaultValue={item.customersname}>
+              <Select defaultValue={item.customerGroup}>
                 <SelectTrigger id="reviewer" className="w-full">
                   <SelectValue placeholder="Select a reviewer" />
                 </SelectTrigger>

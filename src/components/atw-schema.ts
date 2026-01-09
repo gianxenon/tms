@@ -9,7 +9,7 @@ export const orderItemSchema = z.object({
   uom: z.string(),
   price: z.number().min(0),
   wt: z.number().min(0),
-  lineStatus: z.enum(["O", "C"]),
+  lineStatus: z.string(),
 })
 
 export const orderSchema = z.object({
@@ -20,7 +20,7 @@ export const orderSchema = z.object({
   docno: z.string(),
   docDate: z.string(),
   deliveryDate: z.string(),
-  docStatus: z.enum(["Draft", "Confirmed", "Posted"]),
+  docStatus: z.string(),
   items: z.array(orderItemSchema).min(1),
 })
 

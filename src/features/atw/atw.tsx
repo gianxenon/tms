@@ -7,13 +7,10 @@ import { Separator } from "@/components/ui/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { useBreadcrumbs } from "@/hooks/use-breadcrumbs";
 import React from "react";
-import data from "@/lib/so-data.json" 
+import data from "@/lib/atw-data.json" 
 // Convert string dates to Date objects
 const parsedData = data.map(item => ({
-  ...item,
-  deliverydate: new Date(item.deliverydate),
-  uploaddate: new Date(item.uploaddate),
-   secondplantid: String(item.secondplantid),  
+  ...item, 
 }))
 
 const Atw = () => {
