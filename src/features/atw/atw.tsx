@@ -1,28 +1,28 @@
  
-import { DataTable } from "@/components/atw-data-table";
-//import { SectionCards } from "@/components/section-cards";
+import { AtwDataTable } from "@/features/atw/ui/atw-data-table"; 
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { useBreadcrumbs } from "@/hooks/use-breadcrumbs";
+import { useBreadcrumbs } from "@/hooks/use-breadcrumbs";   
+import { useAtwStore } from "./store/atwStore";
+import { useEffect } from "react";
 import React from "react";
-import data from "@/lib/atw-data.json" 
-// Convert string dates to Date objects
-const parsedData = data.map(item => ({
-  ...item, 
-}))
 
 const Atw = () => {
-    const breadcrumbs = useBreadcrumbs();
+    const breadcrumbs = useBreadcrumbs();  
+    const { orders, loading, error, fetchOrders } = useAtwStore();  
+    useEffect(() => {
+      if (orders.length === 0) fetchOrders();
+    }, [orders.length, fetchOrders]); 
     return (
       <SidebarProvider 
-      style={
-        {
-          "--sidebar-width": "calc(var(--spacing) * 72)",
-          "--header-height": "calc(var(--spacing) * 12)",
-        } as React.CSSProperties
-      }
+        style={
+          {
+            "--sidebar-width": "calc(var(--spacing) * 72)",
+            "--header-height": "calc(var(--spacing) * 12)",
+          } as React.CSSProperties
+        }
       >
         <AppSidebar variant="inset" />
         <SidebarInset>
@@ -56,16 +56,15 @@ const Atw = () => {
               </Breadcrumb>
             </div>
           </header> 
-          <div className="flex flex-1 flex-col">
-          <div className="@container/main flex flex-1 flex-col gap-2">
-             
-
-            <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">  
-              <DataTable data={parsedData} />
-            </div>
-            
+          <div className="flex flex-1 flex-col p-4">
+            {loading ? (
+              <div className="text-muted-foreground">Loading ATW...</div>
+            ) : error ? (
+              <div className="text-red-500">{error}</div>
+            ) : (
+              <AtwDataTable/>
+            )}
           </div>
-        </div> 
         </SidebarInset>
       </SidebarProvider>
     )

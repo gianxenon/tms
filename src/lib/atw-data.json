@@ -7,14 +7,15 @@
     "docno": "CSATW00000001", 
     "docDate": "2026-01-09",
     "deliveryDate": "2026-01-09",
-    "docStatus": "Planned",
+    "docStatus": "O",
     "items": [
       {
         "lineId": 1,
         "docid": 1,
         "itemCode": "CS-FG-SPICG",
         "description": "SC SPICY GOURMET CHICKEN",
-        "qty": 10,
+        "qty": 1,
+        "numperuom":15,
         "uom": "BOX",
         "price": 120,
         "wt": 15.5,
@@ -30,7 +31,7 @@
     "docno": "CSATW00000002", 
     "docDate": "2026-01-09",
     "deliveryDate": "2026-01-09",
-    "docStatus": "Draft",
+    "docStatus": "C",
     "items": [
       {
         "lineId": 2,
@@ -38,6 +39,7 @@
         "itemCode": "CS-FG-SPICG",
         "description": "SC SPICY GOURMET CHICKEN",
         "qty": 10,
+        "numperuom":15,
         "uom": "BOX",
         "price": 120,
         "wt": 15.5,
