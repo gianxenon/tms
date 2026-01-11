@@ -10,11 +10,13 @@ import { useEffect } from "react";
 import React from "react";
 
 const Atw = () => {
-    const breadcrumbs = useBreadcrumbs();  
-    const { orders, loading, error, fetchOrders } = useAtwStore();  
+    const breadcrumbs = useBreadcrumbs(); 
+    // ✅ Get state from Zustand store
+    const { orders, loading, error, fetchOrders } = useAtwStore(); 
+    // Fetch data on mount if not loaded
     useEffect(() => {
       if (orders.length === 0) fetchOrders();
-    }, [orders.length, fetchOrders]); 
+    }, []); 
     return (
       <SidebarProvider 
         style={
@@ -57,13 +59,7 @@ const Atw = () => {
             </div>
           </header> 
           <div className="flex flex-1 flex-col p-4">
-            {loading ? (
-              <div className="text-muted-foreground">Loading ATW...</div>
-            ) : error ? (
-              <div className="text-red-500">{error}</div>
-            ) : (
-              <AtwDataTable/>
-            )}
+          <AtwDataTable error={error} loading={loading} />
           </div>
         </SidebarInset>
       </SidebarProvider>
