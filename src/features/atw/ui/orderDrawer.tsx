@@ -109,9 +109,9 @@ export function OrderDrawer({
     <Drawer
       open={open}
       onOpenChange={onOpenChange}
-      direction={isMobile ? "right" : "bottom"} 
+      direction={isMobile ? "bottom" : "right"} 
     >
-       <DrawerContent >
+       <DrawerContent className="px-4" >
         <DrawerHeader>
           <DrawerTitle>
             {mode === "create" && "Create Order"}
@@ -123,9 +123,9 @@ export function OrderDrawer({
           </DrawerTitle>
         </DrawerHeader> 
         <div className="flex flex-col gap-4 overflow-y-auto px-4 text-sm ">
-          <form className="flex flex-col gap-2 px-2">
+          <form className="flex flex-col gap-4">
             {/* Document Info */}
-            <div className="flex justify-between gap-2">
+            <div className="flex justify-between gap-4">
               <div className="flex flex-col gap-3">
                 <Label htmlFor="docno">Document No.</Label>
                 <Input
