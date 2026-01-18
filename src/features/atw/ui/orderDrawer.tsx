@@ -111,7 +111,7 @@ export function OrderDrawer({
     <Drawer
       open={open}
       onOpenChange={onOpenChange}
-      direction={isMobile ? "bottom" : "right"} 
+      direction={isMobile ? "right" : "bottom"} 
     >
        <DrawerContent  className={isMobile ? "w-full max-w-full!  px-10 py-5"  : "w-full max-w-[1000px]! px-10 py-5"} >
         <DrawerHeader>
@@ -127,7 +127,7 @@ export function OrderDrawer({
         <div className="flex flex-col gap-4 overflow-y-auto px-4 text-sm">
           <form className="flex flex-col gap-4">
             {/* Document Info */}
-            <div className="flex justify-between gap-4">
+            <div className="flex justify-between gap-2">
               <div className="flex flex-col gap-3">
                 <Label htmlFor="docno">Document No.</Label>
                 <Input
