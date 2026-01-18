@@ -27,7 +27,7 @@ export function OrderItemsTable({ items, editable, onChange }: Props) {
   }
   
   return (
-    <Table className="h-52">
+    <Table>
       <TableHeader>
         <TableRow>
           <TableHead>Item</TableHead>

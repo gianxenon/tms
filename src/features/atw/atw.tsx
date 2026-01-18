@@ -4,12 +4,19 @@ import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { useBreadcrumbs } from "@/hooks/use-breadcrumbs";    
+import { useBreadcrumbs } from "@/hooks/use-breadcrumbs";   
+import { useAtwStore } from "./store/atwStore";
+import { useEffect } from "react";
 import React from "react";
 
 const Atw = () => {
-    const breadcrumbs = useBreadcrumbs();  
-
+    const breadcrumbs = useBreadcrumbs(); 
+    // ✅ Get state from Zustand store
+    const { orders, loading, error, fetchOrders } = useAtwStore(); 
+    // Fetch data on mount if not loaded
+    useEffect(() => {
+      if (orders.length === 0) fetchOrders();
+    }, []); 
     return (
       <SidebarProvider 
         style={
@@ -51,8 +58,8 @@ const Atw = () => {
               </Breadcrumb>
             </div>
           </header> 
-          <div className="flex flex-1 flex-col p-4"> 
-          <AtwDataTable  />
+          <div className="flex flex-1 flex-col p-4">
+          <AtwDataTable error={error} loading={loading} />
           </div>
         </SidebarInset>
       </SidebarProvider>
