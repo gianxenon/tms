@@ -1,34 +1,30 @@
 // features/atw/api/atw.service.ts
 import type { Order } from "../model/atw-types"
-import api from "@/services/api"
+import data from "@/lib/atw-data.json"
+
+// In-memory store for now (TEMP)
+let atwStore: Order[] = [...data] as Order[]
 
 export const atwService = {
   /** List all ATW orders */
   async list(): Promise<Order[]> {
-    const response = await api.get("/atw/orders") // replace with your endpoint
-    return response.data
+    return Promise.resolve([...atwStore])
   },
 
   /** Create a new ATW order */
   async create(payload: Order): Promise<Order> {
-    const response = await api.post("/atw/orders", payload)
-    return response.data
+    atwStore = [payload, ...atwStore]
+    return Promise.resolve(payload)
   },
 
   /** Get a single order by docid */
-  async get(docid: number): Promise<Order> {
-    const response = await api.get(`/atw/orders/${docid}`)
-    return response.data
+  async get(docid: number): Promise<Order | undefined> {
+    return Promise.resolve(atwStore.find((order) => order.docid === docid))
   },
 
   /** Delete order by docid */
   async delete(docid: number): Promise<void> {
-    await api.delete(`/atw/orders/${docid}`)
-  },
-
-  /** Fetch customers globally */
-  async getCustomers(): Promise<{ id: string; code: string; name: string }[]> {
-    const response = await api.get("/atw/customers") // replace with your endpoint
-    return response.data
+    atwStore = atwStore.filter((order) => order.docid !== docid)
+    return Promise.resolve()
   },
 }

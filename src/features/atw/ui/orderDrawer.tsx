@@ -46,8 +46,10 @@ export function OrderDrawer({
   item,
   mode,
 }: OrderDrawerProps) {
-  const isMobile = useIsMobile() 
-  const [itemPickerOpen, setItemPickerOpen] = useState(false)  
+  const isMobile = useIsMobile()
+
+  const [itemPickerOpen, setItemPickerOpen] = useState(false) 
+  
   const statusValue = mode === "create" ? "O" : item?.docStatus ?? "O" 
   const isDisabled = mode === "create" || mode === "edit" && statusValue !== "C"
   const [customers, setCustomers] = useState<Customer[]>([])

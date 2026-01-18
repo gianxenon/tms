@@ -18,10 +18,7 @@ import { orderSchema  } from "@/features/atw/model/atw-schema"
 import { OrderDrawer } from "./orderDrawer"
 import type { Order } from "@/features/atw/model/atw-types"
 import { useAtwStore } from "../store/atwStore" 
-type AtwTableProps = {
-  error?: string | null
-  loading?: boolean
-}
+
 // ---------------------- COLUMNS ----------------------
 const columns: ColumnDef<Order>[] = [ 
   { 
@@ -146,10 +143,9 @@ const columns: ColumnDef<Order>[] = [
   } 
 ]
  // ---------------------- TABLE COMPONENT ----------------------
-export function AtwDataTable({ error, loading }: AtwTableProps) 
+export function AtwDataTable() 
 {  
-  
-  const {orders} = useAtwStore(); 
+  const { orders } = useAtwStore(); 
   const [rowSelection, setRowSelection] = React.useState({})
   const [columnVisibility, setColumnVisibility] =React.useState<VisibilityState>({})
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
@@ -197,10 +193,10 @@ export function AtwDataTable({ error, loading }: AtwTableProps)
     }, [table, filterColumn, filterValue])
    
     return ( 
-        <div className="flex flex-col gap-4 sm:px-0 lg:px-6">
+        <div className="flex flex-col gap-4 px-5 lg:px-6">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:gap-2  ">
             {/* Excel Upload */}
-            <div className="flex-1  px-5 ">
+            <div className="flex-1 px-5">
                 <Label htmlFor="excel-upload" className="mb-2 block text-sm font-medium ">
                 Upload Excel File
                 </Label>
@@ -222,30 +218,40 @@ export function AtwDataTable({ error, loading }: AtwTableProps)
             {/* Filters */}
             <div className="flex-1 px-5">
                 <Label className="mb-2 block text-sm font-medium">Filters</Label>
-                <div className="flex flex-col sm:flex-row gap-2">
-                  <Select value={filterColumn} onValueChange={setFilterColumn}>
-                      <SelectTrigger className="w-44">
-                      <SelectValue placeholder="Select column" />
-                      </SelectTrigger>
-                      <SelectContent>
-                      {table
-                          .getAllLeafColumns()
-                          .filter(col => col.id)
-                          .map(col => (
-                          <SelectItem key={col.id} value={col.id}>
-                              {typeof col.columnDef.header === "string"
-                                ? col.columnDef.header
-                                : col.id}
-                          </SelectItem>
-                          ))}
-                      </SelectContent>
-                  </Select>
+                <div className="flex gap-2">
+                <Select value={filterColumn} onValueChange={setFilterColumn}>
+                    <SelectTrigger className="w-44">
+                    <SelectValue placeholder="Select column" />
+                    </SelectTrigger>
+                    <SelectContent>
+                    {table
+                        .getAllLeafColumns()
+                        .filter(col => col.id)
+                        .map(col => (
+                        <SelectItem key={col.id} value={col.id}>
+                             {typeof col.columnDef.header === "string"
+                              ? col.columnDef.header
+                              : col.id}
+                        </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
 
-                  <Input
-                      placeholder="Filter value..."
-                      value={filterValue}
-                      onChange={(e) => setFilterValue(e.target.value)} 
-                  /> 
+                <Input
+                    placeholder="Filter value..."
+                    value={filterValue}
+                    onChange={(e) => setFilterValue(e.target.value)}
+                />
+
+                <Button
+                    variant="outline"
+                    onClick={() => {
+                    setFilterColumn("")
+                    setFilterValue("")
+                    }}
+                >
+                    Clear
+                </Button>
                 </div>
             </div>
             </div>
@@ -254,13 +260,16 @@ export function AtwDataTable({ error, loading }: AtwTableProps)
                 <div className="flex items-center justify-between px-4 lg:px-6">
                     <Label htmlFor="view-selector" className="sr-only">
                       View
-                    </Label>  
-                    <TabsList className="flex items-center gap-2">
+                    </Label> 
+                    {/* Table Tabber */}
+                    <TabsList className="**:data-[slot=badge]:bg-muted-foreground/30 hidden **:data-[slot=badge]:size-5 **:data-[slot=badge]:rounded-full **:data-[slot=badge]:px-1 @4xl/main:flex">
                       <TabsTrigger value="atwno">List of Atw</TabsTrigger>
-                      <TabsTrigger value="Planned">
+                      <TabsTrigger value="past-performance">
                           Planned{/* Planned <Badge variant="secondary">3</Badge> */}
                       </TabsTrigger>
-                    </TabsList> 
+                    </TabsList>
+
+                    {/* Create Order Button */}
                     <div className="flex items-center gap-2">
                         <Button
                         variant="outline"
@@ -303,35 +312,33 @@ export function AtwDataTable({ error, loading }: AtwTableProps)
                                 </TableRow>
                                 ))}
                             </TableHeader>
-                            <TableBody  >
-                            {filteredRows.length ? (
-                                filteredRows.map((row) => (
-                                  <TableRow
-                                    key={row.id}
-                                    data-state={row.getIsSelected() && "selected"}
-                                  >
-                                    {row.getVisibleCells().map((cell) => (
-                                      <TableCell key={cell.id}>
-                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                      </TableCell>
-                                    ))}
+                            <TableBody className="**:data-[slot=table-cell]:first:w-8">
+                                {filteredRows.length ? (
+                                  filteredRows.map((row) => (
+                                    <TableRow
+                                      key={row.id}
+                                      data-state={row.getIsSelected() && "selected"}
+                                    >
+                                      {row.getVisibleCells().map((cell) => (
+                                        <TableCell key={cell.id}>
+                                          {flexRender(
+                                            cell.column.columnDef.cell,
+                                            cell.getContext()
+                                          )}
+                                        </TableCell>
+                                      ))}
+                                    </TableRow>
+                                  ))
+                                ) : (
+                                  <TableRow>
+                                    <TableCell
+                                      colSpan={columns.length}
+                                      className="h-24 text-center"
+                                    >
+                                      No results.
+                                    </TableCell>
                                   </TableRow>
-                                ))
-                              ) : (
-                                <TableRow>
-                                  <TableCell
-                                    colSpan={columns.length}
-                                    className="h-24 text-center text-muted-foreground"
-                                  >
-                                    {loading
-                                      ? "Loading ATW orders…"
-                                      : error
-                                      ? "Offline — no cached ATW data available"
-                                      : "No ATW orders found"}
-                                  </TableCell>
-                                </TableRow>
-                              )}
-
+                                )}
                             </TableBody> 
                         </Table> 
                     </div>
