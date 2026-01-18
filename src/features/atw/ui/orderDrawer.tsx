@@ -111,7 +111,7 @@ export function OrderDrawer({
       onOpenChange={onOpenChange}
       direction={isMobile ? "bottom" : "right"} 
     >
-       <DrawerContent className="px-4" >
+       <DrawerContent  className={isMobile ? "w-full max-w-full!  px-10 py-5"  : "w-full max-w-[1000px]! px-10 py-5"} >
         <DrawerHeader>
           <DrawerTitle>
             {mode === "create" && "Create Order"}
