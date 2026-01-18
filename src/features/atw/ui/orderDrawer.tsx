@@ -111,7 +111,7 @@ export function OrderDrawer({
       onOpenChange={onOpenChange}
       direction={isMobile ? "bottom" : "right"} 
     >
-       <DrawerContent  className={isMobile ? "w-full max-w-full!  px-10 py-5"  : "w-full max-w-[1000px]! px-10 py-5"} >
+       <DrawerContent className="px-4" >
         <DrawerHeader>
           <DrawerTitle>
             {mode === "create" && "Create Order"}
@@ -122,7 +122,7 @@ export function OrderDrawer({
             </DrawerDescription>
           </DrawerTitle>
         </DrawerHeader> 
-        <div className="flex flex-col gap-4 overflow-y-auto px-4 text-sm">
+        <div className="flex flex-col gap-4 overflow-y-auto px-4 text-sm ">
           <form className="flex flex-col gap-4">
             {/* Document Info */}
             <div className="flex justify-between gap-4">
@@ -174,7 +174,7 @@ export function OrderDrawer({
                     ))}
                   </SelectContent>
                 </Select>
-              </div>
+            </div>
               
             {/* Items Table */}
             <OrderItemsTable
