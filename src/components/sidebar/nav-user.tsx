@@ -28,7 +28,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from '@/components/ui/sidebar'
+} from '@/components/sidebar/sidebar'
 import { useAuthStore } from "@/features/auth/authStore"
 import { useNavigate } from "react-router-dom"
 

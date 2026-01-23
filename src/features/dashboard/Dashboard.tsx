@@ -13,23 +13,28 @@ import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from '@/components/ui/sidebar'
+} from '@/components/sidebar/sidebar'
 import { useBreadcrumbs } from '@/hooks/use-breadcrumbs';
 import React from 'react';
 import data from "@/lib/data.json"
 import { DataTable } from '@/components/dashboard-data-table';
 import { SectionCards } from '@/components/section-cards';
 import { ChartAreaInteractive } from '@/components/chart-area-interactive';
+import { useAuthStore } from '../auth/authStore';
+ 
 const Dashboard = () => {
-  const breadcrumbs = useBreadcrumbs();
-  return (
+  const breadcrumbs = useBreadcrumbs(); 
+  const {token,user} = useAuthStore( );
+  console.log(token);
+  console.log(user);
+   return (
     <SidebarProvider 
-    style={
+      style={
       {
         "--sidebar-width": "calc(var(--spacing) * 72)",
         "--header-height": "calc(var(--spacing) * 12)",
       } as React.CSSProperties
-    }
+      }
     >
       <AppSidebar variant="inset" />
       <SidebarInset>

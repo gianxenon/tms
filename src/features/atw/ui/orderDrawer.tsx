@@ -59,12 +59,7 @@ export function OrderDrawer({
   const [errors, setErrors] = useState<Record<string, string>>({})
 
   
-  useEffect(() => {
-    // Example: API
-    // fetch("/api/customers")
-    //   .then(res => res.json())
-    //   .then(setCustomers) 
-    // Temporary mock data
+  useEffect(() => { 
     setCustomers([
       { id: "1", code: "BPI", name: "Bounty Plus Inc" },
       { id: "2", code: "QSR", name: "Quick Service Restaurantasfadasdadsa" },

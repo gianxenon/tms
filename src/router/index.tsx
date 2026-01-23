@@ -6,11 +6,14 @@ import Dashboard from "@/features/dashboard/Dashboard";
 import type { JSX } from "react";
 import Trips from "@/features/trip/trip";
 import Atw from "@/features/atw/atw";
-
-const isAuthenticated = () => !!localStorage.getItem("token"); // or Zustand token
+import { useAuthStore } from "@/features/auth/authStore";
+ 
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
-  if (!isAuthenticated()) return <Navigate to="/login" replace />;
+  const token = useAuthStore((s) => s.token);
+
+  if (!token) return <Navigate to="/login" replace />;
+
   return children;
 };
 

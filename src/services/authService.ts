@@ -1,18 +1,15 @@
+//authService.ts
+import { loginResponseSchema, type LoginResponse } from "@/model/schemas/authSchema";
 import api from "@/services/api";
 
-interface LoginResponse {
-  token: string;
-  user: {
-    id: number;
-    name: string;
-    email: string;
-  };
-}
+ 
 
 const authService = {
   login: async (email: string, password: string): Promise<LoginResponse> => {
-    const response = await api.post("/apps/dashboard", { email, password });
-    return response.data;
+    const response = await api.post("/udp.php?objectcode=u_ajaxtest",{type : "login", email, password });  
+    console.log(response);
+    const parsed = loginResponseSchema.parse(response.data);
+    return parsed;
   },
 
   register: async (
@@ -23,11 +20,7 @@ const authService = {
     const response = await api.post("/auth/register", { name, email, password });
     return response.data;
   },
-
-  logout: () => {
-    localStorage.removeItem("token");
-  },
-
+ 
   getProfile: async () => {
     const response = await api.get("/auth/profile");
     return response.data;

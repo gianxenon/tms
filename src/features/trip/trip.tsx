@@ -4,7 +4,7 @@ import { DataTable } from "@/components/trip-data-table";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
-import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/sidebar/sidebar";
 import { useBreadcrumbs } from "@/hooks/use-breadcrumbs";
 import React from "react";
 import data from "@/lib/so-data.json" 

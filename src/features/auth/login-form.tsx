@@ -12,20 +12,25 @@ import { Input } from "@/components/ui/input"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { Logo } from "@/assets"
-//import { useAuthStore } from "@/features/auth/authStore" // Zustand store
+import { useAuthStore } from "@/features/auth/authStore" // Zustand store
+import { Eye, EyeOff } from "lucide-react"
 
 export function LoginForm({ className, ...props }: React.ComponentProps<"div">) {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  //const login = useAuthStore((state) => state.login)
-  const navigate = useNavigate()
+  const [showPassword, setShowPassword] = useState(false);
+  const error = useAuthStore((state) => state.error);
+  const isLoading = useAuthStore((state) => state.isLoading);
 
+  const login = useAuthStore((state) => state.login) 
+
+  const navigate = useNavigate()  
+  
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault() 
-    localStorage.setItem("token", "fake-token"); // TEMP
-    navigate("/apps/dashboard");
-    // const success = await login(email, password)
-    // if (success) navigate("/apps/dashboard")
+    e.preventDefault()  
+     const success = await login(email, password)
+      console.log(success);
+     if (success) navigate("/apps/dashboard")
   }
 
   return (
@@ -39,8 +44,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
                 <p className="text-muted-foreground text-balance">
                   Login to your Acme Inc account
                 </p>
-              </div>
-
+              </div> 
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
@@ -49,7 +53,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
                   placeholder="m@example.com"
                   required
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => setEmail(e.target.value)} 
                 />
               </Field>
 
@@ -63,26 +67,40 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
                     Forgot your password?
                   </a>
                 </div>
-                <Input
-                  id="password"
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </Field>
+                <div className="relative w-full">
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="*********"
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="pr-10" // space for toggle icon
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground"
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
 
+                {/* Error Message */}
+                {error && (
+                  <p className="text-red-500 text-sm mt-1">{error}</p>
+                )}
+              </Field> 
               <Field>
-                <Button type="submit" onClick={() => navigate("/apps/dashboard")}>Login</Button>
+                <Button type="submit" disabled={isLoading}>
+                  {isLoading ? "Logging in..." : "Login"}
+                </Button>
               </Field>
-
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
                 Or continue with
               </FieldSeparator>
-
-              {/* Social buttons here (Apple, Google, Meta) */}
-              <Field className="grid grid-cols-3 gap-4">
-                {/* ...buttons stay as-is */}
+ 
+              <Field className="grid grid-cols-3 gap-4"> 
               </Field>
 
               <FieldDescription className="text-center">
