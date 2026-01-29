@@ -1,8 +1,7 @@
 import { z } from "zod";
 import { userSchema } from "./userSchema"; 
 
-export const loginResponseSchema = z.object({
-  token: z.string(),
+export const loginResponseSchema = z.object({ 
   user: userSchema,
 });
 

@@ -6,7 +6,7 @@ export const atwService = {
   /** List all ATW orders */
   async list(): Promise<Order[]> {
     const response = await api.post("/udp.php?objectcode=u_ajaxtest",{type : "fetchorders"} ) // replace with your endpoint
-    console.log(response.data);
+ 
     return response.data
   },
 

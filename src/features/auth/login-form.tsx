@@ -16,20 +16,17 @@ import { useAuthStore } from "@/features/auth/authStore" // Zustand store
 import { Eye, EyeOff } from "lucide-react"
 
 export function LoginForm({ className, ...props }: React.ComponentProps<"div">) {
-  const [email, setEmail] = useState("")
+  const [userid, setUserId] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false);
   const error = useAuthStore((state) => state.error);
-  const isLoading = useAuthStore((state) => state.isLoading);
-
-  const login = useAuthStore((state) => state.login) 
-
+  const isLoading = useAuthStore((state) => state.isLoading); 
+  const login = useAuthStore((state) => state.login)  
   const navigate = useNavigate()  
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()  
-     const success = await login(email, password)
-      console.log(success);
+     const success = await login(userid, password) 
      if (success) navigate("/apps/dashboard")
   }
 
@@ -46,14 +43,14 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
                 </p>
               </div> 
               <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <FieldLabel htmlFor="userid">username</FieldLabel>
                 <Input
-                  id="email"
-                  type="email"
-                  placeholder="m@example.com"
+                  id="emaiuseridl"
+                  type="text"
+                  placeholder="Enter your username"
                   required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)} 
+                  value={userid}
+                  onChange={(e) => setUserId(e.target.value)} 
                 />
               </Field>
 

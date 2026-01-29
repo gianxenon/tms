@@ -1,7 +1,8 @@
 //App.tsx
-import AppRouter from "@/router/index";
+import AppRouter from "@/router/index"; 
 
 function App() {
+ 
   return <AppRouter/>;
 }
 

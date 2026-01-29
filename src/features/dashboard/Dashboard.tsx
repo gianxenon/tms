@@ -15,18 +15,18 @@ import {
   SidebarTrigger,
 } from '@/components/sidebar/sidebar'
 import { useBreadcrumbs } from '@/hooks/use-breadcrumbs';
-import React from 'react';
+import React   from 'react';
 import data from "@/lib/data.json"
 import { DataTable } from '@/components/dashboard-data-table';
 import { SectionCards } from '@/components/section-cards';
-import { ChartAreaInteractive } from '@/components/chart-area-interactive';
-import { useAuthStore } from '../auth/authStore';
+import { ChartAreaInteractive } from '@/components/chart-area-interactive';  
  
 const Dashboard = () => {
-  const breadcrumbs = useBreadcrumbs(); 
-  const {token,user} = useAuthStore( );
-  console.log(token);
-  console.log(user);
+  const breadcrumbs = useBreadcrumbs();  
+// const fetchProfile = useAuthStore((s) => s.fetchProfile); 
+//   useEffect(() => {
+//     fetchProfile();
+//   }, [fetchProfile]);
    return (
     <SidebarProvider 
       style={

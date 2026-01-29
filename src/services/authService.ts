@@ -5,26 +5,31 @@ import api from "@/services/api";
  
 
 const authService = {
-  login: async (email: string, password: string): Promise<LoginResponse> => {
-    const response = await api.post("/udp.php?objectcode=u_ajaxtest",{type : "login", email, password });  
-    console.log(response);
+  login: async (userid: string, password: string): Promise<LoginResponse> => {
+    const response = await api.post("/udp.php?objectcode=u_ajaxtest",{type : "login", userid, password });   
     const parsed = loginResponseSchema.parse(response.data);
+    console.log("token", parsed.user.token);
+    if (parsed.user.token) { 
+      localStorage.setItem("auth_token", parsed.user.token);
+    }
     return parsed;
   },
 
   register: async (
     name: string,
-    email: string,
+    userid: string,
     password: string
   ): Promise<LoginResponse> => {
-    const response = await api.post("/auth/register", { name, email, password });
+    const response = await api.post("/auth/register", { name, userid, password });
     return response.data;
   },
  
   getProfile: async () => {
-    const response = await api.get("/auth/profile");
-    return response.data;
+    const response = await api.post( "/udp.php?objectcode=u_ajaxtest", { type: "fetchprofile" } ,{ withCredentials: true }); 
+    console.log("getProfile", response.data);
+    return response.data;  
   },
+  
 };
 
 export default authService;

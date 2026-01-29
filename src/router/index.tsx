@@ -3,17 +3,19 @@ import AuthLayout from "@/layouts/AuthLayouts";
 import AppLayout from "@/layouts/AppLayout";
 import Login from "@/features/auth/Login";
 import Dashboard from "@/features/dashboard/Dashboard";
-import type { JSX } from "react";
+import { useEffect, type JSX } from "react";
 import Trips from "@/features/trip/trip";
 import Atw from "@/features/atw/atw";
 import { useAuthStore } from "@/features/auth/authStore";
  
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
-  const token = useAuthStore((s) => s.token);
+  const user = useAuthStore((s) => s.user);
+  const authChecked = useAuthStore((s) => s.authChecked);
+  const isLoading = useAuthStore((s) => s.isLoading); 
 
-  if (!token) return <Navigate to="/login" replace />;
-
+  if (!authChecked || isLoading) return <div>Loading...</div>;  
+  if (!user) return <Navigate to="/login" replace />;  
   return children;
 };
 
@@ -43,5 +45,14 @@ const router = createBrowserRouter([
 ]);
 
 export default function AppRouter() {
+  const fetchProfile = useAuthStore((s) => s.fetchProfile);  
+  useEffect(() => {
+    const token = localStorage.getItem("auth_token");
+    if (token) {
+      fetchProfile();
+    } else {
+      useAuthStore.setState({ authChecked: true }); 
+    }
+  }, [fetchProfile]);
   return <RouterProvider router={router} />;
 }

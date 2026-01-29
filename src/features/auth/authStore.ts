@@ -3,43 +3,29 @@ import { create } from "zustand";
 import authService from "@/services/authService";
 import type { AuthState } from "@/model/AuthState";
 
-export const useAuthStore = create<AuthState>((set) => ({
-  token: null,
+
+
+export const useAuthStore = create<AuthState>((set) => ({ 
   user: null,
   isLoading: false,
   error: null, 
+  authChecked: false,
 
-  setToken: (token) => {
-    if (token) localStorage.setItem("token", token);
-    else localStorage.removeItem("token");
-    set({ token });
-  },
-
-  setUser: (user) => set({ user }),
+   
  
-  login: async (email, password) => {
+  login: async (userid, password) => {
     set({ isLoading: true, error: null });
     try {
-      const res = await authService.login(email, password);  
-      if (res?.user && res?.token) {
-          set({ token: res.token, user: res.user, isLoading: false }); 
-          localStorage.setItem("token", res.token);
-          return true;
-        } else {
-          set({ isLoading: false, error: "Incorrect Credentials", });
-          return false;
-        }
-       
+      const res = await authService.login(userid, password);
+       // store token
+      if (res.user.token) {
+        localStorage.setItem("auth_token", res.user.token);
+      }  
+      set({ user: res.user, isLoading: false, authChecked: true,  }); 
+      return true;  
     } catch (err: unknown) {
-      const message =
-        err instanceof Error
-          ? err.message
-          : "Login failed";
-
-      set({
-        error: message,
-        isLoading: false,
-      });
+      const message = err instanceof Error ? err.message : "Login failed"; 
+      set({ error: message, isLoading: false, });
       return false;
     }
   },
@@ -49,13 +35,10 @@ export const useAuthStore = create<AuthState>((set) => ({
     try {
       const res = await authService.register(name, email, password);
 
-      set({
-        token: res.token,
+      set({ 
         user: res.user,
         isLoading: false,
-      });
-
-      localStorage.setItem("token", res.token);
+      }); 
       return true;
     } catch (err: unknown) {
       const message =
@@ -72,18 +55,20 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
  
   logout: () => { 
-      set({ token: null, user: null, isLoading: false, error: null });
+    localStorage.removeItem("auth_token");  
+    set({ user: null, isLoading: false, error: null, authChecked: true });
   },
 
  
   fetchProfile: async () => {
-    set({ isLoading: true }); 
+    set({ isLoading: true });
     try {
       const profile = await authService.getProfile();
-      set({ user: profile, isLoading: false }); 
+      set({ user: profile.user, isLoading: false, authChecked: true }); 
     } catch (err: unknown) {
       console.error(err);
-      set({ isLoading: false });
+      set({ user: null, isLoading: false, authChecked: true }); 
+      localStorage.removeItem("auth_token"); 
     }
-  },
+  }, 
 }));
