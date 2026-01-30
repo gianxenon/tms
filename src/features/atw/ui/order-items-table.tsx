@@ -9,11 +9,11 @@ type OrderItem = z.infer<typeof orderItemSchema>
 
 interface Props {
   items: OrderItem[]
-  editable: boolean
+  isDisabled: boolean
   onChange?: (items: OrderItem[]) => void
 }
 
-export function OrderItemsTable({ items, editable, onChange }: Props) {
+export function OrderItemsTable({ items, isDisabled, onChange }: Props) {
   const updateQty = (index: number, qty: number) => {
     if (!onChange) return
     const next = [...items]
@@ -25,9 +25,11 @@ export function OrderItemsTable({ items, editable, onChange }: Props) {
     const next = items.filter((_, i) => i !== index)
     onChange(next)
   }
+  console.log("editable", isDisabled)
   
   return (
-    <Table className="h-52">
+    <div className="h-52 overflow-auto border rounded-md">
+    <Table className=" h-52 overflow-auto border rounded-md ">
       <TableHeader>
         <TableRow>
           <TableHead>Item</TableHead>
@@ -37,13 +39,13 @@ export function OrderItemsTable({ items, editable, onChange }: Props) {
         </TableRow>
       </TableHeader>
 
-      <TableBody>
+      <TableBody >
         {items.map((item, i) => (
           <TableRow key={item.lineId}>
             <TableCell>{item.itemCode}</TableCell>
             <TableCell>{item.description}</TableCell>
             <TableCell className="text-right">
-              {editable ? (
+              {!isDisabled ? (
                 <Input
                   type="number"
                   value={item.qty}
@@ -55,7 +57,7 @@ export function OrderItemsTable({ items, editable, onChange }: Props) {
               )}
             </TableCell>
             <TableCell className="text-right">
-              {editable ? (
+              {!isDisabled ? (
                 <Input
                   type="number"
                   value={item.numperuom * item.qty} 
@@ -66,7 +68,7 @@ export function OrderItemsTable({ items, editable, onChange }: Props) {
                 item.qty
               )}
             </TableCell>
-            {editable && (
+            {!isDisabled && (
               <TableCell>
                 <Button size="sm" variant="destructive" onClick={() => deleteRow(i)}>
                   Delete
@@ -77,5 +79,6 @@ export function OrderItemsTable({ items, editable, onChange }: Props) {
         ))}
       </TableBody>
     </Table>
+    </div>
   )
 }

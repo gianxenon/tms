@@ -1,6 +1,6 @@
 import * as React from "react";
 import {  
-  IconCircleCheckFilled, IconPaperclip, IconPlus, IconUpload 
+  IconCircleCheckFilled, IconPaperclip, IconPlus, IconRefresh, IconUpload 
 } from "@tabler/icons-react";
 import type { ColumnDef, ColumnFiltersState, SortingState, VisibilityState } from "@tanstack/react-table";
 import { 
@@ -72,7 +72,7 @@ const columns: ColumnDef<Order>[] = [
       <Badge variant="outline" className="text-muted-foreground px-1.5">
         {row.original.docStatus === "C" ? (
           <>
-            <IconCircleCheckFilled className="fill-green-500 dark:fill-green-400" /> Planned
+            <IconCircleCheckFilled className="fill-green-500 dark:fill-green-400" /> Close
           </>
         ) : (
           <>
@@ -196,20 +196,23 @@ export function AtwDataTable() {
       </div>
 
       <Tabs defaultValue="atwno" className="w-full flex-col gap-6">
-        <div className="flex items-center justify-between px-4 lg:px-6">
-          <TabsList className="flex items-center gap-2">
+        <div className="flex flex-col gap-3 px-4 lg:flex-row lg:items-center lg:justify-between lg:px-6">
+          <TabsList className="flex items-center gap-4" hidden>
             <TabsTrigger value="atwno">List of Atw</TabsTrigger>
             <TabsTrigger value="Planned">Planned</TabsTrigger>
           </TabsList>
+
           <div className="flex items-center gap-2">
             <Button variant="outline" onClick={() => setOpenCreate(true)}>
               <IconPlus className="mr-2 h-4 w-4" /> Create Order
             </Button>
             <OrderDrawer open={openCreate} onOpenChange={setOpenCreate} mode="create" />
-            <Button variant="outline" onClick={fetchOrders}>Refresh</Button>
+            <Button variant="outline" onClick={fetchOrders}>
+              <IconRefresh />
+            </Button>
           </div>
         </div>
-
+ 
         <TabsContent value="atwno" className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6">
           <div className="overflow-hidden rounded-lg border">
             <Table>
